@@ -1,0 +1,7 @@
+.git/
+#ignore csv files
+*.csv
+#ignore "old" folder
+old/
+#ignore images
+*.png
