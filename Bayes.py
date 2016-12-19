@@ -9,7 +9,7 @@ from sklearn.metrics import accuracy_score
 from sklearn import metrics
 
 
-csvFile = pandas.read_csv('metadata_clean_nomissing.csv')
+csvFile = pandas.read_csv('Datasets/train.csv')
 data = numpy.array(csvFile)
 #We won't be using the first column (movie title)
 X = data[:,1:-1]

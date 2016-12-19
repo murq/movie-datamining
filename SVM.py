@@ -5,7 +5,7 @@ from sklearn import svm
 from sklearn.grid_search import GridSearchCV
 
 
-csvFile = pandas.read_csv('metadata_clean_nomissing.csv')
+csvFile = pandas.read_csv('Datasets/train.csv')
 data = numpy.array(csvFile)
 
 #We won't be using the first column (movie title)
