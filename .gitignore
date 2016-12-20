@@ -5,3 +5,5 @@
 old/
 #ignore images
 *.png
+#ignore swp files
+*.swp
