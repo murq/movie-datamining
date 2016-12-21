@@ -22,8 +22,16 @@ rbf_grid.fit(X_train_scaled,y_train)
 print "Best Params=",rbf_grid.best_params_, "Accuracy=", rbf_grid.best_score_
 val_rbf = rbf_grid.best_params_
 
-#SVM with linear/polynomial kernel
-poly_params = {'C':numpy.logspace(-3,4,8), 'kernel':['poly'],'degree':range(1,5)} #C=[0.001,0.01,0.1,1,10,100,1000,10000], degree=[1,2,3,4]
+#SVM with linear kernel
+linear_params = {'C':numpy.logspace(-3,4,8), 'kernel':['linear']} #C=[0.001,0.01,0.1,1,10,100,1000,10000]
+linear_grid = GridSearchCV(svm.SVC(), param_grid=linear_params, cv=20, n_jobs=4, verbose=5)
+print 'Starting linear fit...'
+linear_grid.fit(X_train_scaled, y_train)
+print "Best Params=",linear_grid.best_params_, "Accuracy=", linear_grid.best_score_
+val_linear = linear_grid.best_params_
+
+#SVM with polynomial kernel
+poly_params = {'C':numpy.logspace(-3,4,8), 'kernel':['poly'],'degree':range(2,4)} #C=[0.001,0.01,0.1,1,10,100,1000,10000], degree=[2,3]
 poly_grid = GridSearchCV(svm.SVC(), param_grid=poly_params, cv=20, n_jobs=4, verbose=5)
 print 'Starting poly fit...'
 poly_grid.fit(X_train_scaled,y_train)
@@ -38,17 +46,22 @@ y_test = data[:,-1]
 X_test_scaled = preprocessing.scale(X_train)
 
 #Validation of the rbf kernel
-val_rbf = {'kernel':'rbf', 'C':100, 'gamma':0.001}
 rbftest = svm.SVC(C=val_rbf['C'], kernel=val_rbf['kernel'], gamma=val_rbf['gamma'])
 rbftest.fit(X_train_scaled, y_train)
 pred = rbftest.predict(X_test_scaled)
-print sklearn.metrics.confucion_matrix(y_test,pred)
+print sklearn.metrics.confusion_matrix(y_test,pred)
 print sklearn.metrics.accuracy_score(y_test, pred)
 
-#Validation of the linear/polynomial kernel
-val_poly = {'kernel':'rbf', 'C':100, 'gamma':0.001}
-polytest = svm.SVC(C=val_rbf['C'], kernel=val_rbf['kernel'], gamma=val_rbf['gamma'])
+#Validation of the linear kernel
+lineartest = svm.SVC(C=val_linear['C'], kernel=val_linear['kernel'])
+lineartest.fit(X_train_scaled, y_train)
+pred = lineartest.predict(X_test_scaled)
+print sklearn.metrics.confusion_matrix(y_test,pred)
+print sklearn.metrics.accuracy_score(y_test, pred)
+
+#Validation of the polynomial kernel
+polytest = svm.SVC(C=val_poly['C'], kernel=val_poly['kernel'], degree=val_poly['degree'])
 polytest.fit(X_train_scaled, y_train)
-pred = rbftest.predict(X_test_scaled)
-print sklearn.metrics.confucion_matrix(y_test,pred)
+pred = polytest.predict(X_test_scaled)
+print sklearn.metrics.confusion_matrix(y_test,pred)
 print sklearn.metrics.accuracy_score(y_test, pred)
