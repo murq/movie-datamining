@@ -10,7 +10,7 @@ csvFile = pandas.read_csv('Datasets/train_metadata_clean_category_balanced.csv')
 data = numpy.array(csvFile)
 
 #We won't be using the first column (movie title)
-X_train = data[:,1:-1]
+X_train = data[:,2:-1]
 y_train = data[:,-1]
 X_train_scaled = preprocessing.scale(X_train)
 
@@ -23,15 +23,15 @@ X_train_scaled = preprocessing.scale(X_train)
 #val_rbf = rbf_grid.best_params_
 
 #SVM with linear kernel
-linear_params = {'C':numpy.logspace(-3,3,7), 'kernel':['linear']} #C=[0.001,0.01,0.1,1,10,100,1000,10000]
-linear_grid = GridSearchCV(svm.SVC(), param_grid=linear_params, cv=20, n_jobs=4, verbose=5)
+linear_params = {'C':numpy.logspace(-3,3,7), 'kernel':['linear']} #C=[0.001,0.01,0.1,1,10,100,1000]
+linear_grid = GridSearchCV(svm.SVC(), param_grid=linear_params, cv=20, n_jobs=8, verbose=5)
 print 'Starting linear fit...'
 linear_grid.fit(X_train_scaled, y_train)
 print "Best Params=",linear_grid.best_params_, "Accuracy=", linear_grid.best_score_
 val_linear = linear_grid.best_params_
 
 #SVM with polynomial kernel
-#poly_params = {'C':numpy.logspace(-3,3,7), 'kernel':['poly'],'degree':range(2,4)} #C=[0.001,0.01,0.1,1,10,100,1000,10000], degree=[2,3]
+#poly_params = {'C':numpy.logspace(-3,3,7), 'kernel':['poly'],'degree':range(2,4)} #C=[0.001,0.01,0.1,1,10,100,1000], degree=[2,3]
 #poly_grid = GridSearchCV(svm.SVC(), param_grid=poly_params, cv=20, n_jobs=4, verbose=5)
 #print 'Starting poly fit...'
 #poly_grid.fit(X_train_scaled,y_train)
@@ -41,7 +41,7 @@ val_linear = linear_grid.best_params_
 #Read the test data and scale it
 csvFile = pandas.read_csv('Datasets/test_metadata_clean_category_balanced.csv')
 data = numpy.array(csvFile)
-X_test = data[:,1:-1]
+X_test = data[:,2:-1]
 y_test = data[:,-1]
 X_test_scaled = preprocessing.scale(X_test)
 
