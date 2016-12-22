@@ -44,5 +44,5 @@ clf.fit(X_train, y_train)
 pred = clf.predict(X_test)
 
 print metrics.classification_report(y_test, pred)
-print metrics.confusion_matrix(y_test, pred, labels=['LET_57','GET_58_AND_LET_65','GET_66_AND_LET_71','GET_72'])
+print metrics.confusion_matrix(y_test, pred)
 print metrics.accuracy_score(y_test, pred)
